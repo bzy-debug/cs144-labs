@@ -5,15 +5,23 @@
 
 #include <cstdint>
 #include <string>
+#include <list>
+#include <tuple>
+
+typedef std::tuple<std::string, std::uint64_t, bool> datagram;
 
 //! \brief A class that assembles a series of excerpts from a byte stream (possibly out of order,
 //! possibly overlapping) into an in-order byte stream.
 class StreamReassembler {
   private:
     // Your code here -- add private members as necessary.
-
     ByteStream _output;  //!< The reassembled in-order byte stream
     size_t _capacity;    //!< The maximum number of bytes
+    uint64_t _next;
+    std::list<datagram> _datagrams;
+
+
+    void insert_datagram(std::list<datagram>& datagrams, datagram&& dg);
 
   public:
     //! \brief Construct a `StreamReassembler` that will store up to `capacity` bytes.
